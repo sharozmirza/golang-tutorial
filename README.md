@@ -174,3 +174,29 @@ func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
 // calling myFunction()
 val1, val2 := myFunction(arg1, arg2)
 ```
+
+## Conditional Statements
+
+```go
+if option <= 1 {
+    // do something
+}
+
+if option1 == 1 && option2 >= 2 {
+    // do something
+}
+
+if option1 < 1 || option2 >= 2 {
+    // do something
+}
+
+myBool := option != 1
+
+if option1 == 1 {
+    // do something
+} else if option2 == 2 {
+    // do something else
+} else {
+    // do default
+}
+```
