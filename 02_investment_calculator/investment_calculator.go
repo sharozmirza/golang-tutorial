@@ -6,18 +6,30 @@ import (
 )
 
 func main() {
+	const inflationRate = 2.5
 
-	// Multuple variables can be declared and assigned values to them in the same line. For example:
-	// 		var investmentAmount, name = 1000, "example-name"
+	// In this case, the initial value of investmentAmount and years are 1000.0 and 10.0
+	// They could be declared as
+	//		var investmentAmount float64
+	//		var years float64
+	// In that case, the values would have been a null value, which for a float64 variable is 0.0 in Golang
 
-	// If an explicit type assignment is used like below then all of them must be the same type
 	var investmentAmount, years float64 = 1000, 10
-
-	// Recommendation is to use := as much as possible to declare and assign a variable
-	// Type would be identified by go automatically
 	expectedReturnRate := 5.5
 
-	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+	// Scan() can't (easily) fetch multi-word input values
+	fmt.Print("Investment Amount: ")
+	fmt.Scan(&investmentAmount)
 
-	fmt.Println(futureValue)
+	fmt.Print("Expected Return Rate: ")
+	fmt.Scan(&expectedReturnRate)
+
+	fmt.Print("Years: ")
+	fmt.Scan(&years)
+
+	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+
+	fmt.Println("Future Value:", futureValue)
+	fmt.Println("Future Value (adjusted for inflation):", futureRealValue)
 }
