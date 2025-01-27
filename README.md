@@ -1,3 +1,9 @@
+## Table of Contents
+
+* [Value types](#value-types)
+* [Variable Declarations](#variable-declarations)
+* [Functions](#functions)
+
 ### How to run a go file?
 
 If the file is has the main function/package in it then:<br>
@@ -14,9 +20,7 @@ If running `$ go build` shows error `go: cannot find main module`, that means th
 
 A module can also be run using the command `$ go run .` from the module directory.
 
-### Value types
-
-Go is a statically typed language. So value types are important in Go.
+## Value types
 
 #### Basic Types
 
@@ -37,7 +41,7 @@ Go comes with some built-in basic types:
 
 All Go value types come with a so-called **"null value"** which is the value stored in a variable if no other value is explicitly set. For example, the following `int` variable would have a default value of `0` (because `0` is the null value of `int`, `int32`).
 
-```Go
+```go
 var age int     // age is 0
 ```
 
@@ -47,3 +51,126 @@ Here's a list of the novels for the different types:
 * `float`: `0.0`
 * `string`: `""`
 * `bool`: `false`
+
+## Variable Declarations
+
+Go is a statically typed language. So value types are important in Go.
+
+Option 1 - implicit type assignment
+
+```go
+const myConstant = 123
+var myInt = 5
+var myDouble = 5.5
+var myString = "Hello"
+var myString2 = `Word`
+var myBoolean = true
+var var1, var2 = 123, 123.45
+```
+
+Option 2 - explicit type assignment
+
+```go
+const myConstant float64 =  123     // go will read it as 123.0
+var myInt int = -5
+var myDouble float64 = 5.5
+var myString string = "Hello"
+var myString2 string = `Word`
+var myBoolean bool = true
+var var1, var2 float64 = 12, 45   // for a single line explicit type assignment all variables must be the same type
+```
+
+Option 3 - Use `:=` sign (recommended)
+
+```go
+// Recommendation is to use := as much as possible to declare and assign a variable
+// Type would be identified by go automatically
+myInt := 6
+myDouble := 5.5
+myString := "Hello"
+myString2 := `Word`
+myBoolean := true
+var1, var2 = 12.0, 45
+```
+
+* Value formatting options can be found here: https://pkg.go.dev/fmt@go1.23.5
+
+## Functions
+
+A function with no parameter
+
+```go
+func myFunction() {
+    // do something
+}
+```
+
+A function with one parameter
+
+```go
+func myFunction(text string) {
+    // do something
+}
+```
+
+A function with multiple parameters of same type (option #1)
+
+```go
+func myFunction(text string, text2 string) {
+    // do something
+}
+```
+
+A function with multiple parameters of same type (option #2)
+
+```go
+func myFunction(text, text2 string) {
+    // do something
+}
+```
+
+A function with multiple parameters of different types
+
+```go
+func myFunction(number int, text string) {
+    // do something
+}
+```
+
+A function with single return values
+
+```go
+func myFunction(number int, text string) float64 {
+    // do something
+    return retVal
+}
+```
+
+A function with multiple return values
+
+```go
+func myFunction(param1 int, param2 string) (float64, int) {
+    // do something
+    return retVal1, retVal2
+}
+
+func myFunction2(param1, param2 float64) (float64, float64) {
+    // do something
+    return retVal1, retVal2
+}
+
+// calling myFunction()
+val1, val2 := myFunction(arg1, arg2)
+```
+
+Alternative return value syntax. In this case, `retVal1` and `retVal2` don't need to be declared within `myFunction()`
+
+```go
+func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
+    // do something
+    return
+}
+
+// calling myFunction()
+val1, val2 := myFunction(arg1, arg2)
+```
