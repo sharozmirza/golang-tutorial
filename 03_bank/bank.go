@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -8,13 +9,21 @@ import (
 
 const accountBalanceFile = "balance.txt"
 
-func getBalanceFromFile() float64 {
-	// _ means that there is a returned value but we are not going to use it and it does not have any use in our case
-	// usually the ReadFile() returns data, and err
-	data, _ := os.ReadFile(accountBalanceFile)        // data is the byte data from the input file
-	balanceText := string(data)                       // convert byte data in string
-	balance, _ := strconv.ParseFloat(balanceText, 64) // convert string to float64
-	return balance
+func getBalanceFromFile() (float64, error) {
+	data, err := os.ReadFile(accountBalanceFile) // data is the byte data from the input file
+
+	if err != nil {
+		return 1000, errors.New("failed to find balance file")
+	}
+
+	balanceText := string(data)                         // convert byte data in string
+	balance, err := strconv.ParseFloat(balanceText, 64) // convert string to float64
+
+	if err != nil {
+		return 1000, errors.New("failed to parse stored balance value")
+	}
+
+	return balance, nil
 }
 
 func writeBalanceToFile(balance float64) {
@@ -26,7 +35,14 @@ func writeBalanceToFile(balance float64) {
 }
 
 func main() {
-	var accountBalance = getBalanceFromFile()
+	var accountBalance, err = getBalanceFromFile()
+
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("---------")
+		// panic("Can't continue, sorry.")
+	}
 
 	fmt.Println("Welcome to Go Bank!")
 

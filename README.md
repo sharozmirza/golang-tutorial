@@ -248,3 +248,42 @@ for {
 ```
 
 * Do not use `switch` statements within a loop in Go, use `if else` statement instead. If a `switch` statement is used within a loop and the `default` case has a `break` command in it, it will not break out of the loop. It will break out of the `switch` statement instead. And using `return` instead of `default` may cause unexpected behavior like exiting out of the application.
+
+## Error handling
+
+Error handling in Go is quite different from many other languages. Instead of using exceptions, Go uses a more explicit approach, relying on return values to indicate errors. Many functions in Go that could fail return an error as the last return value. If the function completes successfully, the error will be `nil`. If something goes wrong, the error will be non-nil. `nil` is a special value that represents the absence of a value or a "null" state.
+
+```go
+package main
+
+import (
+    "fmt"
+    "errors"
+)
+
+func divide(a, b int) (int, error) {
+    if b == 0 {
+        return 0, errors.New("division by zero")
+    }
+    return a / b, nil
+}
+
+func main() {
+    result, err := divide(10, 0)
+    if err != nil {
+        fmt.Println("Error:", err)
+    } else {
+        fmt.Println("Result:", result)
+    }
+}
+```
+
+Go also provides a way to handle unexpected errors using `panic`. `panic` triggers an immediate stop to the program’s normal execution. This is typically reserved for truly exceptional situations (such as programming bugs) rather than normal error handling.
+
+```go
+func main() {
+    // do something
+    panic("something went wrong")
+    fmt.Println("This will not be reached")
+}
+```
