@@ -3,6 +3,9 @@
 * [Value types](#value-types)
 * [Variable Declarations](#variable-declarations)
 * [Functions](#functions)
+* [Loops](#loops)
+* [Conditional Statements](#conditional-statements)
+* [Error Handling](#error-handling)
 
 ### How to run a go file?
 
