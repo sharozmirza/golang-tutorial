@@ -27,7 +27,7 @@ func main() {
 
 			if depositAmount <= 0 {
 				fmt.Println("Invalid amount. Must be greater than 0.")
-				return
+				continue
 			}
 
 			accountBalance += depositAmount // accountBalance = accountBalance + depositAmount
@@ -51,6 +51,9 @@ func main() {
 			fmt.Println("Balance updated! New amount:", accountBalance)
 		} else {
 			fmt.Println("Goodbye!")
+			break
 		}
 	}
+
+	fmt.Println("Thanks for choosing our bank!")
 }
