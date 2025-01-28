@@ -7,6 +7,7 @@
 * [Loops](#loops)
 * [Conditional Statements](#conditional-statements)
 * [Error Handling](#error-handling)
+* [Pointers](#pointers)
 
 ### How to run a go file?
 
@@ -304,3 +305,27 @@ func main() {
     fmt.Println("This will not be reached")
 }
 ```
+
+## Pointers
+
+Pointers are variables that store addresses instead of values. Using pointers unnecessary you can avoid unnecessary value copies. It can also directly mutate values by accessing the address of a variable.
+
+```go
+myVar := 123    // the value of myVar is stored in an address in computer memory
+
+// pointer definition and value assignment (method 1)
+var myVarPointer *int
+myVarPointer = &myVar   // retrieves and stores the address of myVar
+
+// pointer definition and value assignment (method 2)
+myVarPointer := &myVar  // retrieves and stores the address of myVar
+
+fmt.Println("Address of myVar", myVarPointer)   // prints the address of myVar
+fmt.Println("Value of myVar", *myVarPointer)    // pointer as a value, prints the value of myVar
+```
+
+When a variable is passed to a function, Go creates a copy of the value of that variable in memory and passes that copy to that function. So until the function execution is done and the copied value is cleaned up by Go's garbage collector, the value exists twice in memory. For very large and complex valus, this may take up too much memory space.
+
+Another advantage of using pointers is, when a pointer of a variable is passed as a function argument, the function can directly edit the underlying value, no return value is required. But it can also make the code less understandable or cause unexpected behavior if not used properly.
+
+For a pointer `nil` represents the absence of an address value or the pointer's null value.
