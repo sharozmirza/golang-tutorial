@@ -177,6 +177,8 @@ val1, val2 := myFunction(arg1, arg2)
 
 ## Conditional Statements
 
+If else statement:
+
 ```go
 if option <= 1 {
     // do something
@@ -201,6 +203,21 @@ if option1 == 1 {
 }
 ```
 
+Switch statement:<br>
+
+* In other languages, a break `break` command needs to be added at the end of each case to make sure no other cases get triggered. That's not needed when working with Go. Only one case becomes active in a `switch` statement in Go.
+
+```go
+switch option {
+    case 1:
+        // do something
+    case 2:
+        // do something else
+    default:
+        // default behavior
+}
+```
+
 ## Loops
 
 Only for loop is available in Go unlike some other languages.
@@ -218,3 +235,5 @@ for {
     // do something
 }
 ```
+
+* Do not use `switch` statements within a loop in Go, use `if else` statement instead. If a `switch` statement is used within a loop and the `default` case has a `break` command in it, it will not break out of the loop. It will break out of the `switch` statement instead. And using `return` instead of `default` may cause unexpected behavior like exiting out of the application.
