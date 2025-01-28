@@ -1,9 +1,32 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+const accountBalanceFile = "balance.txt"
+
+func getBalanceFromFile() float64 {
+	// _ means that there is a returned value but we are not going to use it and it does not have any use in our case
+	// usually the ReadFile() returns data, and err
+	data, _ := os.ReadFile(accountBalanceFile)        // data is the byte data from the input file
+	balanceText := string(data)                       // convert byte data in string
+	balance, _ := strconv.ParseFloat(balanceText, 64) // convert string to float64
+	return balance
+}
+
+func writeBalanceToFile(balance float64) {
+	balanceText := fmt.Sprint(balance)
+	// 0644 - means that the owner of the file can read and write in the file
+	// and other users who have access to the file can only read it
+	// To learn more about file permissions in Linux visit: https://www.redhat.com/en/blog/linux-file-permissions-explained
+	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644) // filename, byte data, permission
+}
 
 func main() {
-	var accountBalance = 1000.0
+	var accountBalance = getBalanceFromFile()
 
 	fmt.Println("Welcome to Go Bank!")
 
@@ -33,6 +56,7 @@ func main() {
 
 			accountBalance += depositAmount // accountBalance = accountBalance + depositAmount
 			fmt.Println("Balance updated! New amount:", accountBalance)
+			writeBalanceToFile(accountBalance)
 		case 3:
 			fmt.Print("Withdrawal amount: ")
 			var withdrawalAmount float64
@@ -50,6 +74,7 @@ func main() {
 
 			accountBalance -= withdrawalAmount // accountBalance = accountBalance + depositAmount
 			fmt.Println("Balance updated! New amount:", accountBalance)
+			writeBalanceToFile(accountBalance)
 		default:
 			fmt.Println("Goodbye!")
 			fmt.Println("Thanks for choosing our bank")

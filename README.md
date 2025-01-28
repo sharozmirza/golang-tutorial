@@ -175,6 +175,17 @@ func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
 val1, val2 := myFunction(arg1, arg2)
 ```
 
+If a function returns multiple values and you don't want to use/handle one of the values, `_` can be used instead of keeping the variable unused. For example:
+
+```go
+func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
+    // do something
+    return
+}
+
+val1, _ := myFunction(arg1, arg2)
+```
+
 ## Conditional Statements
 
 If else statement:
