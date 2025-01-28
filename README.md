@@ -1,5 +1,6 @@
 ## Table of Contents
 
+* [Go Packages](#go-packages)
 * [Value types](#value-types)
 * [Variable Declarations](#variable-declarations)
 * [Functions](#functions)
@@ -23,9 +24,22 @@ If running `$ go build` shows error `go: cannot find main module`, that means th
 
 A module can also be run using the command `$ go run .` from the module directory.
 
+## Go Packages
+
+In Go, packages are a fundamental way to organize and structure code. A package is a collection of Go source files in the same directory, and it is the basic unit of code organization and reuse in Go.
+
+* Go comes with a large set of standard library packages, which provide common functionality like input/output (I/O), string manipulation, networking, and more. For example, `fmt`, `math`, `os`, `net/http`, and `encoding/json`.
+* Every Go file must be a part of a package. That's how all the files are linked together behind the scene by the Go compiler.
+* Files in the same directory of the `main` package will be part of the `main` package. The fuctions from these files can be called within the other files in the `main` package without using the import statement. The first letter of the function names does not need to be capitalized in this case.
+* Every package must go in a subfolder within a project. The folder will have the same name as the package.
+* To import your own package in a application, you will need to add the full path that includes the module path. For example, if the module name is `example.com/my-app`, then to import a package, `my-package`, into another file of the application, you will need to add `example.com/my-app/my-package` in the `import` statement.
+* In Go, there is no "export" keyword. The functions, constants, variables that start with an upper case character are available in other packages.
+* To install a 3P package, use `go get <path-to-the-package>` command. For example, `go get github.com/Pallinder/go-randomdata`. Then the package will be downloaded and added to the project. The downloaded package is stored globally in GOPATH on the system. Also, `require <path-to-the-pakage>:<package-version>` will be added to the `go.mod` file. `go.mod` file lists all the 3P dependencies of a project. If a project is cloned from a repository, use `go get` command to download all the dependencies listed in the `go.mod` file of that project.
+* To find Go packages, go to: https://pkg.go.dev/
+
 ## Value types
 
-#### Basic Types
+### Basic Types
 
 Go comes with some built-in basic types:
 
@@ -40,7 +54,7 @@ Go comes with some built-in basic types:
 * `int64`: A 64-bit signed integer, an integer that can represent a larger range of values, specifically from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
 * There are more types like `int8` or `uint8` which work in the same way (integer with smaller number range)
 
-#### Null values
+### Null values
 
 All Go value types come with a so-called **"null value"** which is the value stored in a variable if no other value is explicitly set. For example, the following `int` variable would have a default value of `0` (because `0` is the null value of `int`, `int32`).
 
