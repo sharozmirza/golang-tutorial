@@ -8,6 +8,7 @@
 * [Conditional Statements](#conditional-statements)
 * [Error Handling](#error-handling)
 * [Pointers](#pointers)
+* [Structs](#structs)
 
 ### How to run a go file?
 
@@ -329,3 +330,57 @@ When a variable is passed to a function, Go creates a copy of the value of that 
 Another advantage of using pointers is, when a pointer of a variable is passed as a function argument, the function can directly edit the underlying value, no return value is required. But it can also make the code less understandable or cause unexpected behavior if not used properly.
 
 For a pointer `nil` represents the absence of an address value or the pointer's null value.
+
+## Structs
+
+In Go, structs are used to define custom data types that group together variables (fields) of different types. A struct is similar to a class in other programming languages like Java or C++, but Go does not have classes or inheritance. Instead, it uses structs to represent data and behaviors associated with it.
+
+```go
+// A lower case letter can be use to name a custom type as well. In that case it would not be available outside of that package
+
+// Define a struct 
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+}
+
+func main() {
+    // Create an instance of the struct
+    var person Person
+
+    person = Person{    // typically no space is added between the struct name and the {
+        FirstName: "John",
+        LastName:  "Doe",
+        Age:       30,
+    }
+
+    // Access struct fields
+    fmt.Println(person.FirstName) // Output: John
+    fmt.Println(person.LastName)  // Output: Doe
+    fmt.Println(person.Age)       // Output: 30
+}
+```
+
+Other instantiation options:
+
+```go
+// option 1 - with field names (order doesn't matter)
+person := Person{
+    FirstName: "John",
+    LastName:  "Doe",
+    Age:       30,
+}
+
+// option 2 - without field names (order matters)
+person := Person{"John", "Doe", 30}
+
+// option 3 - null struct
+person := Person{}
+
+// option 4 - partial instantiation
+person := Person{
+    FirstName: "John",
+    Age:       30,
+}
+```
