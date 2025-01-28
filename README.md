@@ -200,3 +200,13 @@ if option1 == 1 {
     // do default
 }
 ```
+
+## Loops
+
+Only for loop is available in Go unlike some other languages.
+
+```go
+for i := 0; i < 10; i++ {
+    //do something
+}
+```
