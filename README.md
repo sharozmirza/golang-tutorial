@@ -388,9 +388,9 @@ person := Person{
 }
 ```
 
-Using `structs` with pointers:<br>
+#### Using `structs` with pointers
 
-* Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
+Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
 
 ```go
 ...
@@ -406,4 +406,38 @@ func main() {
 
     fmt.Println(person.FirstName) // Output: Jane
 }
+```
+
+#### Structs methods
+
+A function that is associated with a struct is called a method. A struct method is defined outside of the struct literals (`{}`)
+
+```go
+...
+...
+
+// A struct method of the Person struct. Since it is a struct method, it doesn't have any parameter related to the struct.
+func (p Person) Greet() {
+    fmt.Println("Hello, my name is", p.FirstName, p.LastName)
+}
+
+func main() {
+    person := Person{"John", "Doe"}
+    person.Greet() // Output: Hello, my name is John Doe
+}
+````
+
+A mutator method (a setter method) is a method that modifies the fields of an object or struct. In Go, since function arguments are passed by value by default, when an instance of a struct is passed to a function or method, Go creates a copy of that instance, and changes are made to the copy. Therefore, it does not affect the original instance. By passing a pointer to the instance, the method modifies with the original instance, not a copy of it.
+
+```go
+...
+...
+
+// Mutator method with a pointer receiver (pass-by-reference)
+func (p *Person) SetFirstName(firstName string) {
+    p.FirstName = firstName
+}
+
+...
+...
 ```
