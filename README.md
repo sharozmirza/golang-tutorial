@@ -16,6 +16,7 @@
   * [Structs Methods](#structs-methods)
   * [Constructor Functions](#constuctor-functions)
   * [Struct Embedding](#struct-embedding)
+  * [Type Alias and Named Type](#type-alias-and-named-type)
 
 ### How to run a go file?
 
@@ -557,6 +558,62 @@ func main() {
 
     // Call the method on the Person struct (which overrides the Address method)
     fmt.Println(person.FullAddress())     // Output: John Doe lives at 123 Main St, Anytown, CA
+}
+```
+
+#### Type Alias and Named Type
+
+In Go, the `type` keyword can be used to create a **type alias**. It does not create a new, distinct type. It's simply an alias for the original type. An alias provides an alternate name for an existing type, which can be useful for clarity, readability, or creating custom types that are based on existing ones.
+
+```go
+...
+...
+
+// Create an alias for the built-in int type
+type MyInt = int
+
+func main() {
+    var a MyInt = 10
+    var b int = 20
+
+    fmt.Println(a)  // Output: 10
+    fmt.Println(b)  // Output: 20
+}
+```
+
+If a completely new type is needed to be defined based on an existing type (not just an alias), `type` can be used *without* the `=` sign. This creates a **distinct, named type**, which behaves like the original type but is treated as a separate type. This is useful when a method needs to associated with a built-in variable type (or a type that is imported from another package) like associatind a methnod with a `struct` type.
+
+```go
+...
+...
+
+// Create a named type that is based on int
+type MyInt int
+
+// Define a method on a built-in type (int)
+// Error: cannot define new methods on non-local type
+// func (m int) MultiplyByTwo() int {
+//     return m * 2
+// }
+
+// Define a method on the new named type (MyInt)
+func (m MyInt) MultiplyByTwo() MyInt {
+    return m * 2
+}
+
+func main() {
+    var a MyInt = 10    // to use custom type, the value needs to be set explicitly
+    b := 20
+
+    fmt.Println(a)  // Output: 10
+    fmt.Println(b)  // Output: 20
+
+    // The types are distinct, so this would result in an error
+    // a = b  // Error: cannot use b (type int) as type MyInt in assignment
+
+    // Call the method on MyInt
+    result := a.MultiplyByTwo()
+    fmt.Println("Result:", result) // Output: Result: 20
 }
 ```
 
