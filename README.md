@@ -348,9 +348,6 @@ For a pointer `nil` represents the absence of an address value or the pointer's 
 In Go, `structs` are used to define custom data types that group together variables (fields) of different types. A struct is similar to a class in other programming languages like Java or C++, but Go does not have classes or inheritance. Instead, it uses structs to represent data and behaviors associated with it.
 
 ```go
-...
-...
-
 // A lower case letter can be use to name a custom type as well. In that case it would not be available outside of that package
 
 // Define a struct 
@@ -405,9 +402,6 @@ person := Person{
 Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
 
 ```go
-...
-...
-
 func updateName(p *Person) {
     p.FirstName = "Jane" // Modifies the original struct
 }
@@ -425,9 +419,6 @@ func main() {
 A function that is associated with a struct is called a method. A struct method is defined outside of the struct literals (`{}`)
 
 ```go
-...
-...
-
 // A struct method of the Person struct. Since it is a struct method, it doesn't have any parameter related to the struct. It has a receiver type (p Person) instead
 func (p Person) Greet() {
     fmt.Println("Hello, my name is", p.FirstName, p.LastName)
@@ -442,16 +433,10 @@ func main() {
 A mutator method (a setter method) is a method that modifies the fields of an object or struct. In Go, since function arguments are passed by value by default, when an instance of a struct is passed to a function or method, Go creates a copy of that instance, and changes are made to the copy. Therefore, it does not affect the original instance. By passing a pointer to the instance, the method modifies with the original instance, not a copy of it.
 
 ```go
-...
-...
-
 // Mutator method with a pointer receiver (pass-by-reference)
 func (p *Person) SetFirstName(firstName string) {
     p.FirstName = firstName
 }
-
-...
-...
 ```
 
 #### Constuctor Functions
@@ -459,9 +444,6 @@ func (p *Person) SetFirstName(firstName string) {
 In Go, there isn't a built-in concept of a constructor like in some object-oriented languages (e.g., Python or Java). However, a constructor for a struct can be simulated by creating a function that returns an instance of the struct, often initialized with specific values.
 
 ```go
-...
-...
-
 // Constructor function for Person
 // Returning a value would have worked as well, but by returning a pointer a copy creation was prevented
 func NewPerson(firstName, lastName string, age int) *Person {
@@ -475,18 +457,12 @@ func NewPerson(firstName, lastName string, age int) *Person {
 func main() {
     // Create a new Person using the constructor
     person := NewPerson("John", "Doe", 30)
-
-    ...
-    ...
 }
 ```
 
 A constructor function can also be used for data validation before instantiating a struct.
 
 ```go
-...
-...
-
 // Constructor function with data validation for Person
 func NewPerson(firstName, lastName string, age int) (*Person, error) {
     if firstName == "" || lastName == "" {
@@ -507,9 +483,6 @@ func main() {
         fmt.Println(err)
         return 
     }
-
-    ...
-    ...
 }
 ```
 
@@ -520,9 +493,6 @@ Struct embedding in Go is a feature that allows one struct to be embedded inside
 Simple struct embedding:
 
 ```go
-...
-...
-
 // Define a struct for Address
 type Address struct {
     Street, City, State string
@@ -570,9 +540,6 @@ func main() {
 In Go, the `type` keyword can be used to create a **type alias**. It does not create a new, distinct type. It's simply an alias for the original type. An alias provides an alternate name for an existing type, which can be useful for clarity, readability, or creating custom types that are based on existing ones.
 
 ```go
-...
-...
-
 // Create an alias for the built-in int type
 type MyInt = int
 
@@ -588,9 +555,6 @@ func main() {
 If a completely new type is needed to be defined based on an existing type (not just an alias), `type` can be used *without* the `=` sign. This creates a **distinct, named type**, which behaves like the original type but is treated as a separate type. This is useful when a method needs to associated with a built-in variable type (or a type that is imported from another package) like associatind a methnod with a `struct` type.
 
 ```go
-...
-...
-
 // Create a named type that is based on int
 type MyInt int
 
@@ -628,9 +592,6 @@ Struct tags are metadata annotations that can be associated with the fields of a
 Example: JSON serialization
 
 ```go
-...
-...
-
 type Person struct {
     FirstName string `json:"first_name"`
     LastName  string `json:"last_name"`
@@ -691,9 +652,6 @@ type InterfaceName interface {
 Example:
 
 ```go
-...
-...
-
 // Define an interface
 type Speaker interface {
     Speak() string
@@ -765,17 +723,14 @@ if ok {
 Type assertion with switch statement:
 
 ```go
-...
-...
-
-func printType(i interface{}) {
-    switch v := i.(type) {
+func printType(value interface{}) {
+    switch value.(type) {
     case int:
-        fmt.Println("Integer:", v)
+        fmt.Println("Integer:", value)
     case string:
-        fmt.Println("String:", v)
+        fmt.Println("String:", value)
     case float64:
-        fmt.Println("Float64:", v)
+        fmt.Println("Float64:", value)
     default:
         fmt.Println("Unknown type")
     }
@@ -786,5 +741,46 @@ func main() {
     printType("hello")   // Output: String: hello
     printType(3.14)      // Output: Float64: 3.14
     printType(true)      // Output: Unknown type
+}
+```
+
+## Generics
+
+Generics allows a flexible way to write functions, types, and data structures that can work with any data type.
+
+```go
+// Define a generic function to add two values of type int or float64 or string
+func add[T int | float64 | string](a, b T) T {
+    return a + b
+}
+
+// Define a generic function to swap two values of any type
+func Swap[T any](a, b T) (T, T) {
+    return b, a
+}
+
+func main() {
+    // Adding two integers
+    result := add(1, 2)
+    fmt.Println("Result:", result)// Output: Result: 3
+
+    // Adding two float64s
+    result := add(1.3, 2.5)
+    fmt.Println("Result:", result)// Output: Result: 3.8
+
+    // Swapping two integers
+    x, y := 1, 2
+    x, y = Swap(x, y)
+    fmt.Println("Swapped integers:", x, y) // Output: Swapped integers: 2 1
+
+    // Swapping two strings
+    str1, str2 := "hello", "world"
+    str1, str2 = Swap(str1, str2)
+    fmt.Println("Swapped strings:", str1, str2) // Output: Swapped strings: world hello
+
+    // Swapping two float64 values
+    f1, f2 := 3.14, 2.71
+    f1, f2 = Swap(f1, f2)
+    fmt.Println("Swapped floats:", f1, f2) // Output: Swapped floats: 2.71 3.14
 }
 ```
