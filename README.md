@@ -17,6 +17,7 @@
   * [Constructor Functions](#constuctor-functions)
   * [Struct Embedding](#struct-embedding)
   * [Type Alias and Named Type](#type-alias-and-named-type)
+  * [Struct Tags](#struct-tags)
 
 ### How to run a go file?
 
@@ -617,4 +618,55 @@ func main() {
 }
 ```
 
+#### Struct Tags
+
+Struct tags are metadata annotations that can be associated with the fields of a struct. They allow additional information to be attached to the struct fields, which can be used by external libraries or frameworks to perform tasks like JSON serialization, databse ORM mapping, validation, or reflection.
+
+Example: JSON serialization
+
+```go
+...
+...
+
+type Person struct {
+    FirstName string `json:"first_name"`
+    LastName  string `json:"last_name"`
+    Age       int    `json:"age"`
+}
+
+func main() {
+    // Create an instance of Person
+    p := Person{FirstName: "John", LastName: "Doe", Age: 30}
+
+    // Convert the struct to JSON
+    jsonData, err := json.Marshal(p)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Println(string(jsonData)) // Output: {"first_name":"John","last_name":"Doe","age":30}
+}
+```
+
+Example: field validation
+
+```go
+import "github.com/go-playground/validator/v10"
+
+type Person struct {
+    FirstName string `validate:"required"`
+    Age       int    `validate:"gte=18"`
+}
+
+func main() {
+    validate := validator.New()
+
+    p := Person{FirstName: "", Age: 17}
+
+    // Validate struct
+    err := validate.Struct(p)
+    if err != nil {
+        fmt.Println(err) // Output: FirstName: required
+    }
+}
 ```
