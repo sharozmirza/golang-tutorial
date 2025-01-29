@@ -13,6 +13,29 @@ func main() {
 	expectedReturnRate := 5.5
 
 	// Scan() can't (easily) fetch multi-word input values
+	// bufio package can be used to read multi-word input values
+	// Example:
+	// 		reader := bufio.NewReader(os.Stdin)
+
+	// The '\n' parameter in the `ReadString()` method means that it should stop reading at the new line character of the input
+	// Notice the use of single quotes ('') here
+	// In Go, single quotes are used to represent runes, which are essentially Unicode code points.
+	// A rune is an alias for the `int32` type and represents a single character in the Go language.
+	// Runes are commonly used when working with characters,
+	// especially for non-ASCII characters or when you need to work with the Unicode representation of a character.
+
+	//		text, err := reader.ReadString('\n')
+	//
+	//		if err != nil {
+	//			return ""
+	//		}
+	//
+	//		text = strings.TrimSuffix(text, "\n")	// remove line break
+	//		text = strings.TrimSuffix(text, "\r")	// in Windows, the line breaks are created with \r\n as well, so remove them as well
+
+	// The code implementation can be found here:
+	// https://github.com/mschwarzmueller/go-complete-guide-resources/blob/main/code/05-structs-custom-types/15-handling-long-user-input/main.go#L33
+
 	fmt.Print("Investment Amount: ")
 	fmt.Scan(&investmentAmount)
 
