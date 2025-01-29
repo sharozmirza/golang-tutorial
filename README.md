@@ -15,6 +15,7 @@
   * [Using `structs` with Pointers](#using-structs-with-pointers)
   * [Structs Methods](#structs-methods)
   * [Constructor Functions](#constuctor-functions)
+  * [Struct Embedding](#struct-embedding)
 
 ### How to run a go file?
 
@@ -505,4 +506,58 @@ func main() {
     ...
     ...
 }
+```
+
+#### Struct Embedding
+
+Struct embedding in Go is a feature that allows one struct to be embedded inside another. This provides a way to achieve inheritance-like behavior without explicitly using classes or inheritance, as in traditional object-oriented programming languages. When a struct is embedded in another struct, the fields and methods of the embedded struct can be accessed directly from the outer struct.
+
+Simple struct embedding:
+
+```go
+...
+...
+
+// Define a struct for Address
+type Address struct {
+    Street, City, State string
+}
+
+// Define a method on Address
+func (a Address) FullAddress() string {
+    return a.Street + ", " + a.City + ", " + a.State
+}
+
+// Define a struct for Person that embeds Address
+type Person struct {
+    FirstName string
+    LastName  string
+    Address   // Embedded struct
+}
+
+// Method on Person that overrides the inherited FullAddress method
+func (p Person) FullAddress() string {
+    return p.FirstName + " " + p.LastName + " lives at " + p.Street + ", " + p.City + ", " + p.State
+}
+
+func main() {
+    // Create an instance of Person, including an Address
+    person := Person{
+        FirstName: "John",
+        LastName:  "Doe",
+        Address:   Address{"123 Main St", "Anytown", "CA"},
+    }
+
+    // Access fields or methods directly from the embedded Address struct
+    fmt.Println("Name:", person.FirstName, person.LastName)
+    fmt.Println("Street:", person.Street) // Accessing Address directly
+    fmt.Println("City:", person.City)     // Accessing Address directly
+    fmt.Println("State:", person.State)   // Accessing Address directly
+    fmt.Println(person.FullAddress())     // Output: 123 Main St, Anytown, CA
+
+    // Call the method on the Person struct (which overrides the Address method)
+    fmt.Println(person.FullAddress())     // Output: John Doe lives at 123 Main St, Anytown, CA
+}
+```
+
 ```
