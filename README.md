@@ -19,6 +19,8 @@
   * [Type Alias and Named Type](#type-alias-and-named-type)
   * [Struct Tags](#struct-tags)
 * [Interfaces](#interfaces)
+  * [Embedded Interface](#embedded-interface)
+  * [Empty Interface](#empty-interface)
 
 ### How to run a go file?
 
@@ -726,6 +728,25 @@ func main() {
     fmt.Println(animal.Speak()) // Output: I am an animal named Dog
 }
 ```
+
+#### Embedded Interface
+
+An embedded interface in Go is an interface type that is included (embedded) within another interface. When an interface embeds another interface, it inherits all the methods of the embedded interface, which allows for more flexible and modular designs.
+
+```go
+// Define a basic interface with a method
+type Speaker interface {
+    Speak() string
+}
+
+// Define a more complex interface that embeds the Speaker interface
+type Greeter interface {
+    Speaker  // Embedding the Speaker interface
+    Greet() string
+}
+```
+
+#### Empty Interface
 
 An empty interface (`interface{}`) is a type that holds any value. Since every type in Go implicitly satisfies the empty interface, it is often used to store values of any type and can be used for type assertions.
 
