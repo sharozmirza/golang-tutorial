@@ -333,9 +333,12 @@ For a pointer `nil` represents the absence of an address value or the pointer's 
 
 ## Structs
 
-In Go, structs are used to define custom data types that group together variables (fields) of different types. A struct is similar to a class in other programming languages like Java or C++, but Go does not have classes or inheritance. Instead, it uses structs to represent data and behaviors associated with it.
+In Go, `structs` are used to define custom data types that group together variables (fields) of different types. A struct is similar to a class in other programming languages like Java or C++, but Go does not have classes or inheritance. Instead, it uses structs to represent data and behaviors associated with it.
 
 ```go
+...
+...
+
 // A lower case letter can be use to name a custom type as well. In that case it would not be available outside of that package
 
 // Define a struct 
@@ -382,5 +385,25 @@ person := Person{}
 person := Person{
     FirstName: "John",
     Age:       30,
+}
+```
+
+Using `structs` with pointers:<br>
+
+* Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
+
+```go
+...
+...
+
+func updateName(p *Person) {
+    p.FirstName = "Jane" // Modifies the original struct
+}
+
+func main() {
+    person := Person{"John", "Doe"}
+    updateName(&person) // Passing a pointer to the struct
+
+    fmt.Println(person.FirstName) // Output: Jane
 }
 ```
