@@ -1,14 +1,20 @@
 ## Table of Contents
 
+* [Go Project and Modules](#go-project-and-modules)
 * [Go Packages](#go-packages)
-* [Value types](#value-types)
+* [Value Types](#value-types)
+  * [Basic Types](#basic-types)
+  * [Null Values](#null-values)
 * [Variable Declarations](#variable-declarations)
 * [Functions](#functions)
-* [Loops](#loops)
 * [Conditional Statements](#conditional-statements)
+* [Loops](#loops)
 * [Error Handling](#error-handling)
 * [Pointers](#pointers)
 * [Structs](#structs)
+  * [Using `structs` with Pointers](#using-structs-with-pointers)
+  * [Structs Methods](#structs-methods)
+  * [Constructor Functions](#constuctor-functions)
 
 ### How to run a go file?
 
@@ -20,7 +26,7 @@ If the file is has the main function/package in it then:<br>
 Go to the project directory and run: `$ go build`<br>
 This will create an executable file of the application and it can be run in any platform even if the platform does not have go installed.
 
-### Go project and modules
+### Go Project and Modules
 
 If running `$ go build` shows error `go: cannot find main module`, that means that there is no go project in the directory. To make a folder a go project, run `$ go mod init <module-name>` in that folder. For example, `go mod init example.com/my-app`. It will add `go.mod` file within the directory, which means the folder and the subfolders are now part of a go module. Now, the `$ go build` command should work and it should create `my-app.exe` file in the directory. On Windows computers this file can be run by double clicking it and on Mac/Linux, it can be run by `$ ./my-app` command.
 
@@ -34,12 +40,12 @@ In Go, packages are a fundamental way to organize and structure code. A package 
 * Every Go file must be a part of a package. That's how all the files are linked together behind the scene by the Go compiler.
 * Files in the same directory of the `main` package will be part of the `main` package. The fuctions from these files can be called within the other files in the `main` package without using the import statement. The first letter of the function names does not need to be capitalized in this case.
 * Every package must go in a subfolder within a project. The folder will have the same name as the package.
-* To import your own package in a application, you will need to add the full path that includes the module path. For example, if the module name is `example.com/my-app`, then to import a package, `my-package`, into another file of the application, you will need to add `example.com/my-app/my-package` in the `import` statement.
+* To import your own package in an application, the full path that includes the module path will need to be added.". For example, if the module name is `example.com/my-app`, then to import a package, `my-package`, into another file of the application, add `example.com/my-app/my-package` to the `import` statement.
 * In Go, there is no "export" keyword. The functions, constants, variables that start with an upper case character are available in other packages.
 * To install a 3P package, use `go get <path-to-the-package>` command. For example, `go get github.com/Pallinder/go-randomdata`. Then the package will be downloaded and added to the project. The downloaded package is stored globally in GOPATH on the system. Also, `require <path-to-the-pakage>:<package-version>` will be added to the `go.mod` file. `go.mod` file lists all the 3P dependencies of a project. If a project is cloned from a repository, use `go get` command to download all the dependencies listed in the `go.mod` file of that project.
 * To find Go packages, go to: https://pkg.go.dev/
 
-## Value types
+## Value Types
 
 ### Basic Types
 
@@ -56,7 +62,7 @@ Go comes with some built-in basic types:
 * `int64`: A 64-bit signed integer, an integer that can represent a larger range of values, specifically from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
 * There are more types like `int8` or `uint8` which work in the same way (integer with smaller number range)
 
-### Null values
+### Null Values
 
 All Go value types come with a so-called **"null value"** which is the value stored in a variable if no other value is explicitly set. For example, the following `int` variable would have a default value of `0` (because `0` is the null value of `int`, `int32`).
 
@@ -64,7 +70,7 @@ All Go value types come with a so-called **"null value"** which is the value sto
 var age int     // age is 0
 ```
 
-Here's a list of the novels for the different types:
+Here's a list of the null values for different types:
 
 * `int`: `0`
 * `float`: `0.0`
@@ -194,7 +200,7 @@ func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
 val1, val2 := myFunction(arg1, arg2)
 ```
 
-If a function returns multiple values and you don't want to use/handle one of the values, `_` can be used instead of keeping the variable unused. For example:
+If multiple values are returned by a function and one of the values is not wanted/handled, `_` can be used instead of keeping the variable unused. For example:
 
 ```go
 func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
@@ -268,7 +274,7 @@ for {
 
 * Do not use `switch` statements within a loop in Go, use `if else` statement instead. If a `switch` statement is used within a loop and the `default` case has a `break` command in it, it will not break out of the loop. It will break out of the `switch` statement instead. And using `return` instead of `default` may cause unexpected behavior like exiting out of the application.
 
-## Error handling
+## Error Handling
 
 Error handling in Go is quite different from many other languages. Instead of using exceptions, Go uses a more explicit approach, relying on return values to indicate errors. Many functions in Go that could fail return an error as the last return value. If the function completes successfully, the error will be `nil`. If something goes wrong, the error will be non-nil. `nil` is a special value that represents the absence of a value or a "null" state.
 
@@ -309,7 +315,7 @@ func main() {
 
 ## Pointers
 
-Pointers are variables that store addresses instead of values. Using pointers unnecessary you can avoid unnecessary value copies. It can also directly mutate values by accessing the address of a variable.
+Pointers are variables that store addresses instead of values. Using pointers making unnecessary copies of a value can be avoided. It can also directly mutate values by accessing the address of a variable.
 
 ```go
 myVar := 123    // the value of myVar is stored in an address in computer memory
@@ -388,7 +394,7 @@ person := Person{
 }
 ```
 
-#### Using `structs` with pointers
+#### Using `structs` with Pointers
 
 Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
 
@@ -408,7 +414,7 @@ func main() {
 }
 ```
 
-#### Structs methods
+#### Structs Methods
 
 A function that is associated with a struct is called a method. A struct method is defined outside of the struct literals (`{}`)
 
@@ -416,7 +422,7 @@ A function that is associated with a struct is called a method. A struct method 
 ...
 ...
 
-// A struct method of the Person struct. Since it is a struct method, it doesn't have any parameter related to the struct.
+// A struct method of the Person struct. Since it is a struct method, it doesn't have any parameter related to the struct. It has a receiver type (p Person) instead
 func (p Person) Greet() {
     fmt.Println("Hello, my name is", p.FirstName, p.LastName)
 }
@@ -425,7 +431,7 @@ func main() {
     person := Person{"John", "Doe"}
     person.Greet() // Output: Hello, my name is John Doe
 }
-````
+```
 
 A mutator method (a setter method) is a method that modifies the fields of an object or struct. In Go, since function arguments are passed by value by default, when an instance of a struct is passed to a function or method, Go creates a copy of that instance, and changes are made to the copy. Therefore, it does not affect the original instance. By passing a pointer to the instance, the method modifies with the original instance, not a copy of it.
 
@@ -442,9 +448,9 @@ func (p *Person) SetFirstName(firstName string) {
 ...
 ```
 
-#### Constuctor functions
+#### Constuctor Functions
 
-In Go, there isn't a built-in concept of a constructor like in some object-oriented languages (e.g., Python or Java). However, you can simulate a constructor for a struct by creating a function that returns an instance of the struct, often initialized with specific values.
+In Go, there isn't a built-in concept of a constructor like in some object-oriented languages (e.g., Python or Java). However, a constructor for a struct can be simulated by creating a function that returns an instance of the struct, often initialized with specific values.
 
 ```go
 ...
