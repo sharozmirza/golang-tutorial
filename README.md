@@ -441,3 +441,62 @@ func (p *Person) SetFirstName(firstName string) {
 ...
 ...
 ```
+
+#### Constuctor functions
+
+In Go, there isn't a built-in concept of a constructor like in some object-oriented languages (e.g., Python or Java). However, you can simulate a constructor for a struct by creating a function that returns an instance of the struct, often initialized with specific values.
+
+```go
+...
+...
+
+// Constructor function for Person
+// Returning a value would have worked as well, but by returning a pointer a copy creation was prevented
+func NewPerson(firstName, lastName string, age int) *Person {
+    return &Person{
+        FirstName: firstName,
+        LastName:  lastName,
+        Age:       age,
+    }
+}
+
+func main() {
+    // Create a new Person using the constructor
+    person := NewPerson("John", "Doe", 30)
+
+    ...
+    ...
+}
+```
+
+A constructor function can also be used for data validation before instantiating a struct.
+
+```go
+...
+...
+
+// Constructor function with data validation for Person
+func NewPerson(firstName, lastName string, age int) (*Person, error) {
+    if firstName == "" || lastName == "" {
+        return nil, errors.New("first name and last name are required")
+    }
+
+    return &Person{
+        FirstName: firstName,
+        LastName:  lastName,
+        Age:       age,
+    }, nil
+}
+
+func main() {
+    person, err := NewPerson("John", "Doe", 30)
+
+    if err != nil {
+        fmt.Println(err)
+        return 
+    }
+
+    ...
+    ...
+}
+```
