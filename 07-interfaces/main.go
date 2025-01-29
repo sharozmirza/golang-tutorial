@@ -10,6 +10,10 @@ import (
 	"example.com/note/todo"
 )
 
+type saver interface {
+	Save() error
+}
+
 func main() {
 	// note
 	title, content := getNoteData()
@@ -22,14 +26,11 @@ func main() {
 	}
 
 	userNote.Display()
-	err = userNote.Save()
+	err = saveData(userNote)
 
 	if err != nil {
-		fmt.Println("Saving the note failed.")
 		return
 	}
-
-	fmt.Println("Saving the note succeeded!")
 
 	// todo
 	todoText := getUserInput("Todo text: ")
@@ -42,14 +43,25 @@ func main() {
 	}
 
 	todo.Display()
-	err = todo.Save()
+	err = saveData(todo)
 
 	if err != nil {
-		fmt.Println("Saving the todo failed.")
 		return
 	}
+}
 
-	fmt.Println("Saving the todo succeeded!")
+// saver interface is being used as a type for data
+// this means whichever value is passed in data, it will be able to use the Save() method from saver interface
+func saveData(data saver) error {
+	err := data.Save()
+
+	if err != nil {
+		fmt.Println("Saving the note failed.")
+		return err
+	}
+
+	fmt.Println("Saving the note succeeded!")
+	return nil
 }
 
 func getNoteData() (string, string) {

@@ -18,6 +18,7 @@
   * [Struct Embedding](#struct-embedding)
   * [Type Alias and Named Type](#type-alias-and-named-type)
   * [Struct Tags](#struct-tags)
+* [Interfaces](#interfaces)
 
 ### How to run a go file?
 
@@ -668,5 +669,101 @@ func main() {
     if err != nil {
         fmt.Println(err) // Output: FirstName: required
     }
+}
+```
+
+## Interfaces
+
+In Go, an `interface` is a type that specifies a set of method signatures without providing the implementation of those methods. The method signatures can be implemented by any type, regardless of their concrete definitions. Interfaces are central to Go’s design and are key to achieving polymorphism and abstraction. There’s no need for explicit declarations like `implements` or `extends` to implement an interface.
+
+Syntax for defining an interface:
+
+```go
+type InterfaceName interface {
+    Method1() returnType
+    Method2(argType) returnType
+    // More methods
+}
+```
+
+Example:
+
+```go
+...
+...
+
+// Define an interface
+type Speaker interface {
+    Speak() string
+}
+
+// Define a struct that implements the interface
+type Person struct {
+    Name string
+}
+
+// Implement the Speak method for Person
+func (p Person) Speak() string {
+    return "Hello, my name is " + p.Name
+}
+
+// Another type implementing the interface
+type Animal struct {
+    Name string
+}
+
+func (a Animal) Speak() string {
+    return "I am an animal named " + a.Name
+}
+
+func main() {
+    // Create instances of Person and Animal
+    person := Person{Name: "John"}
+    animal := Animal{Name: "Dog"}
+
+    // Use the Speak method
+    fmt.Println(person.Speak()) // Output: Hello, my name is John
+    fmt.Println(animal.Speak()) // Output: I am an animal named Dog
+}
+```
+
+An empty interface (`interface{}`) is a type that holds any value. Since every type in Go implicitly satisfies the empty interface, it is often used to store values of any type and can be used for type assertions.
+
+```go
+var i interface{} = 42
+
+// Type assertion
+value, ok := i.(int)
+if ok {
+    fmt.Println("The value is an int:", value) // Output: The value is an int: 42
+} else {
+    fmt.Println("The value is not an int")
+}
+```
+
+Type assertion with switch statement:
+
+```go
+...
+...
+
+func printType(i interface{}) {
+    switch v := i.(type) {
+    case int:
+        fmt.Println("Integer:", v)
+    case string:
+        fmt.Println("String:", v)
+    case float64:
+        fmt.Println("Float64:", v)
+    default:
+        fmt.Println("Unknown type")
+    }
+}
+
+func main() {
+    printType(42)        // Output: Integer: 42
+    printType("hello")   // Output: String: hello
+    printType(3.14)      // Output: Float64: 3.14
+    printType(true)      // Output: Unknown type
 }
 ```
