@@ -21,6 +21,13 @@
 * [Interfaces](#interfaces)
   * [Embedded Interface](#embedded-interface)
   * [Empty Interface](#empty-interface)
+* [Generics](#generics)
+* [Arrays](#arrays)
+  * [Accessing Array Elements](#accessing-array-elements)
+  * [Iterating Over An Array](#iterating-over-an-array)
+  * [Multidimensional Arrays](#multidimensional-arrays)
+  * [Array Slicing](#array-slicing)
+  * [Length and Capacity of a Slice](#length-and-capacity-of-a-slice)
 
 ### How to run a go file?
 
@@ -783,4 +790,139 @@ func main() {
     f1, f2 = Swap(f1, f2)
     fmt.Println("Swapped floats:", f1, f2) // Output: Swapped floats: 2.71 3.14
 }
+```
+
+## Arrays
+
+In Go, an array is a fixed-size collection of elements of the same type. The size of an array is part of its type, meaning `[5]int` and `[10]int` are distinct types. Arrays are value types, so when an array is assigned or passed, a copy of the array is made.
+
+```go
+// Declare an array of 5 integers
+var numbers [5]int
+
+// Initialize the array
+numbers = [5]int{1, 2, 3, 4, 5}
+
+// Declare and initialize an array of 3 strings
+fruits := [3]string{"Apple", "Banana", "Cherry"}
+
+fmt.Println(numbers) // Output: [1 2 3 4 5]
+fmt.Println(fruits)  // Output: [Apple Banana Cherry]
+```
+
+#### Accessing Array Elements
+
+```go
+numbers := [4]int{10, 20, 30, 40}
+
+// Access and print the third element (index 2)
+fmt.Println(numbers[2]) // Output: 30
+
+// Modify the second element (index 1)
+numbers[1] = 25
+fmt.Println(numbers) // Output: [10 25 30 40]
+```
+
+#### Iterating Over An Array
+
+```go
+numbers := [3]int{1, 2, 3}
+
+// Iterate over the array and print each element
+for i := 0; i < len(numbers); i++ {
+    fmt.Printf("Element at index %d: %d\n", i, numbers[i])
+}
+
+// Output
+// Element at index 0: 1
+// Element at index 1: 2
+// Element at index 2: 3
+
+fruits := [3]string{"Apple", "Banana", "Cherry"}
+
+// Iterate over the array using range
+for index, value := range fruits {
+    fmt.Printf("Index: %d, Value: %s\n", index, value)
+}
+
+// Output
+// Index: 0, Value: Apple
+// Index: 1, Value: Banana
+// Index: 2, Value: Cherry
+```
+
+#### Multidimensional Arrays
+
+```go
+matrix = [3][3]int{
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9},
+}
+
+// Print the 2D array
+for i := 0; i < 3; i++ {
+    for j := 0; j < 3; j++ {
+        fmt.Printf("%d ", matrix[i][j])
+    }
+    fmt.Println()
+}
+
+// Output
+// 1 2 3 
+// 4 5 6 
+// 7 8 9 
+```
+
+#### Array Slicing
+
+A slice of an array is created by specifying a range of indices within the array. The syntax for array slicing is as follows:
+
+```go
+array[start:end]
+```
+
+* `start`: The index at which to begin the slice (inclusive).
+* `end`: The index at which to end the slice (exclusive).
+* If `start` is omitted, it defaults to `0` (the beginning of the array).
+* If `end` is omitted, it defaults to the length of the array.
+* Negative indexes can't be used
+* Highest index that can be used is the array size
+* When a slice is created, it points to the underlying array. The slice doesn't store its data or creates a copy of the original array; it simply references part of the array. Therefore, modifying a slice will modify the original array (and vice versa).
+
+#### Length and Capacity of a Slice
+
+* **Length** refers to the number of elements in the slice. It represents the current size of the slice.
+* **Capacity** refers to the maximum number of elements the slice can hold without allocating additional memory. It represents the total size of the underlying array starting from the first element of the slice.
+* A slice can access elements beyond its length (up to its capacity) because it shares the same underlying array, but it cannot access elements before its start index in the original array.
+
+```go
+arr := [6]int{10, 20, 30, 40, 50, 60}
+
+fmt.Println("Original Array:", arr) // Output: [10 20 30 40 50 60]
+
+// Create a slice from the array (from index 1 to 4, exclusive)
+slice1 := arr[1:4]
+
+fmt.Println("Slice 1 (arr[1:4]):", slice1) // Output: [20 30 40]
+fmt.Println("Length of Slice 1:", len(slice1)) // Output: 3
+fmt.Println("Capacity of Slice 1:", cap(slice1)) // Output: 5 (from index 1 to the end of the array)
+
+// Create another slice from the first slice (from index 1 to 3, exclusive)
+slice2 := slice1[1:3]
+
+fmt.Println("Slice 2 (slice1[1:3]):", slice2) // Output: [30 40]
+fmt.Println("Length of Slice 2:", len(slice2)) // Output: 2
+fmt.Println("Capacity of Slice 2:", cap(slice2)) // Output: 4 (from index 2 to the end of the array)
+
+// Access elements beyond the length of slice2 (using the underlying array)
+// Explanation: slice2 has access to the underlying array's elements beyond its length.
+fmt.Println("Accessing slice2[2]:", slice2[2]) // Output: 50
+
+// Modify an element in slice2 and observe the change in the original array
+slice2[1] = 99
+fmt.Println("After modifying slice2[1]:")
+fmt.Println("Slice 2:", slice2) // Output: [30 99]
+fmt.Println("Slice 1:", slice1) // Output: [20 30 99]
+fmt.Println("Original Array:", arr) // Output: [10 20 30 99 50 60]
 ```
