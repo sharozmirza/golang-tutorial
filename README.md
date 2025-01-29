@@ -28,6 +28,8 @@
   * [Multidimensional Arrays](#multidimensional-arrays)
   * [Array Slicing](#array-slicing)
   * [Length and Capacity of a Slice](#length-and-capacity-of-a-slice)
+  * [Dynamic Arrays (Lists) With Slices](#dynamic-arrays-lists-with-slices)
+  * [Removing Elements Using Slices](#removing-elements-using-slices)
 
 ### How to run a go file?
 
@@ -926,3 +928,34 @@ fmt.Println("Slice 2:", slice2) // Output: [30 99]
 fmt.Println("Slice 1:", slice1) // Output: [20 30 99]
 fmt.Println("Original Array:", arr) // Output: [10 20 30 99 50 60]
 ```
+
+#### Dynamic Arrays (Lists) With Slices
+
+In Go, there is no concept of a *dynamic array* or *list* in the same way as some other languages. However, dynamic/resizable behavior can be achieved using slices.
+
+```go
+// Create a dynamic array (slice) with one initial element
+dynamicArray := []int{10}
+
+// Append elements to the slice (dynamic resizing)
+dynamicArray = append(dynamicArray, 20, 30)
+
+fmt.Println("Dynamic Array:", dynamicArray)     // Output: [10 20 30]
+fmt.Println("Second Element:", dynamicArray[1]) // Output: 20
+```
+
+#### Removing Elements Using Slices
+
+Go does not provide a built-in function specifically for removing elements from an array/slice. However, tt can be achieved by by using slicing or other techniques.
+
+```go
+slice := []int{10, 20, 30, 40, 50}
+
+// Remove the element at index 2 (value 30)
+indexToRemove := 2
+slice = append(slice[:indexToRemove], slice[indexToRemove+1:]...)
+
+fmt.Println("Slice after removal:", slice) // Output: [10 20 40 50]
+```
+
+* The above example shows how to remove an element from a slice by index. Removing an element by value or removing multiple elements can be achieved using loops.

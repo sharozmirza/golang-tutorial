@@ -27,4 +27,26 @@ func main() {
 	highlightedPrices = highlightedPrices[:3]
 	fmt.Println(highlightedPrices)
 	fmt.Println(len(highlightedPrices), cap(highlightedPrices))
+
+	// building a dynamic list
+
+	list := []float64{10.99, 8.99}
+	fmt.Println(list[0:1])
+	list[1] = 9.99
+
+	list = append(list, 5.99)
+	list = list[1:]
+	fmt.Println(list)
+
+	// removing elements
+
+	// Create a slice
+	slice := []int{10, 20, 30, 40, 50}
+
+	// Remove the element at index 2 (value 30)
+	indexToRemove := 2
+	slice = append(slice[:indexToRemove], slice[indexToRemove+1:]...)
+
+	// Print the updated slice
+	fmt.Println("Slice after removal:", slice) // Output: [10 20 40 50]
 }
