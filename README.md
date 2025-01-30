@@ -8,6 +8,7 @@
 * [Variable Declarations](#variable-declarations)
 * [Functions](#functions)
   * [Using Functions As Values](#using-functions-as-values)
+  * [Variadic Functions](#variadic-functions)
 * [Conditional Statements](#conditional-statements)
 * [Loops](#loops)
 * [Error Handling](#error-handling)
@@ -304,6 +305,57 @@ func main() {
 }
 ```
 
+### Variadic Functions
+
+A variadic function is a function that accepts a variable number of arguments of the same type. Instead of defining a fixed number of parameters, variadic functions use an ellipsis (...) before the type to indicate that they can take zero or more arguments.
+
+```go
+// A variadic function to calculate the sum of numbers
+func sum(numbers ...int) int {
+    total := 0
+    for _, num := range numbers {
+        total += num
+    }
+    return total
+}
+
+// Variadic function with a regular argument and a variadic argument
+func greet(prefix string, words ...string) {
+    fmt.Println(prefix)
+    for _, word := range words {
+        fmt.Println(word)
+    }
+}
+
+func main() {
+    fmt.Println(sum(10, 20, 30, 40))   // Output: 100
+
+    greet("Hi:", "How", "are", "you")
+    // Output:
+    // Hi:
+    // How
+    // are
+    // you
+}
+```
+
+A slice can also be passed to a variadic function by using the spread operator (`...`), which unpacks the slice into individual arguments.
+
+```go
+func printNumbers(numbers ...int) {
+    for _, num := range numbers {
+        fmt.Println(num)
+    }
+}
+
+func main() {
+    nums := []int{1, 2, 3, 4, 5}
+
+    // Passing a slice to the variadic function
+    printNumbers(nums...)  // Output: 1 2 3 4 5
+}
+```
+
 ## Conditional Statements
 
 If else statement:
@@ -484,7 +536,7 @@ person := Person{
 }
 ```
 
-#### Using `structs` with Pointers
+### Using `structs` with Pointers
 
 Normally dereferencing a pointer (e.g. `(*p).FirstName = "Jane"`) is needed to get access to the value stored in it. But for structs, Go allows the usage of pointers directly to access the value stored in it.
 
@@ -501,7 +553,7 @@ func main() {
 }
 ```
 
-#### Structs Methods
+### Structs Methods
 
 A function that is associated with a struct is called a method. A struct method is defined outside of the struct literals (`{}`)
 
@@ -526,7 +578,7 @@ func (p *Person) SetFirstName(firstName string) {
 }
 ```
 
-#### Constuctor Functions
+### Constuctor Functions
 
 In Go, there isn't a built-in concept of a constructor like in some object-oriented languages (e.g., Python or Java). However, a constructor for a struct can be simulated by creating a function that returns an instance of the struct, often initialized with specific values.
 
@@ -573,7 +625,7 @@ func main() {
 }
 ```
 
-#### Struct Embedding
+### Struct Embedding
 
 Struct embedding in Go is a feature that allows one struct to be embedded inside another. This provides a way to achieve inheritance-like behavior without explicitly using classes or inheritance, as in traditional object-oriented programming languages. When a struct is embedded in another struct, the fields and methods of the embedded struct can be accessed directly from the outer struct.
 
@@ -622,7 +674,7 @@ func main() {
 }
 ```
 
-#### Type Alias and Named Type
+### Type Alias and Named Type
 
 In Go, the `type` keyword can be used to create a **type alias**. It does not create a new, distinct type. It's simply an alias for the original type. An alias provides an alternate name for an existing type, which can be useful for clarity, readability, or creating custom types that are based on existing ones.
 
@@ -672,7 +724,7 @@ func main() {
 }
 ```
 
-#### Struct Tags
+### Struct Tags
 
 Struct tags are metadata annotations that can be associated with the fields of a struct. They allow additional information to be attached to the struct fields, which can be used by external libraries or frameworks to perform tasks like JSON serialization, databse ORM mapping, validation, or reflection.
 
@@ -774,7 +826,7 @@ func main() {
 }
 ```
 
-#### Embedded Interface
+### Embedded Interface
 
 An embedded interface in Go is an interface type that is included (embedded) within another interface. When an interface embeds another interface, it inherits all the methods of the embedded interface, which allows for more flexible and modular designs.
 
@@ -791,7 +843,7 @@ type Greeter interface {
 }
 ```
 
-#### Empty Interface
+### Empty Interface
 
 An empty interface (`interface{}`) is a type that holds any value. Since every type in Go implicitly satisfies the empty interface, it is often used to store values of any type and can be used for type assertions.
 
@@ -890,7 +942,7 @@ fmt.Println(numbers) // Output: [1 2 3 4 5]
 fmt.Println(fruits)  // Output: [Apple Banana Cherry]
 ```
 
-#### Accessing Array Elements
+### Accessing Array Elements
 
 ```go
 numbers := [4]int{10, 20, 30, 40}
@@ -903,7 +955,7 @@ numbers[1] = 25
 fmt.Println(numbers) // Output: [10 25 30 40]
 ```
 
-#### Iterating Over An Array
+### Iterating Over An Array
 
 ```go
 numbers := [3]int{1, 2, 3}
@@ -931,7 +983,7 @@ for index, value := range fruits {
 // Index: 2, Value: Cherry
 ```
 
-#### Multidimensional Arrays
+### Multidimensional Arrays
 
 ```go
 matrix = [3][3]int{
@@ -954,7 +1006,7 @@ for i := 0; i < 3; i++ {
 // 7 8 9 
 ```
 
-#### Array Slicing
+### Array Slicing
 
 A slice of an array is created by specifying a range of indices within the array. The syntax for array slicing is as follows:
 
@@ -970,7 +1022,7 @@ array[start:end]
 * Highest index that can be used is the array size
 * When a slice is created, it points to the underlying array. The slice doesn't store its data or creates a copy of the original array; it simply references part of the array. Therefore, modifying a slice will modify the original array (and vice versa).
 
-#### Length and Capacity of a Slice
+### Length and Capacity of a Slice
 
 * **Length** refers to the number of elements in the slice. It represents the current size of the slice.
 * **Capacity** refers to the maximum number of elements the slice can hold without allocating additional memory. It represents the total size of the underlying array starting from the first element of the slice.
@@ -1007,7 +1059,7 @@ fmt.Println("Slice 1:", slice1) // Output: [20 30 99]
 fmt.Println("Original Array:", arr) // Output: [10 20 30 99 50 60]
 ```
 
-#### Dynamic Arrays (Lists) With Slices
+### Dynamic Arrays (Lists) With Slices
 
 In Go, there is no concept of a *dynamic array* or *list* in the same way as some other languages. However, dynamic/resizable behavior can be achieved using slices.
 
@@ -1022,7 +1074,7 @@ fmt.Println("Dynamic Array:", dynamicArray)     // Output: [10 20 30]
 fmt.Println("Second Element:", dynamicArray[1]) // Output: 20
 ```
 
-#### Removing Elements Using Slices
+### Removing Elements Using Slices
 
 Go does not provide a built-in function specifically for removing elements from an array/slice. However, tt can be achieved by by using slicing or other techniques.
 
@@ -1092,7 +1144,7 @@ for key, value := range m {
 delete(m, "banana")
 ```
 
-#### make()
+### make()
 
 The make() function is a built-in function used to initialize slices or maps. It allocates memory and initializes the data structure to be used, which is crucial because these types do not automatically allocate memory when declared. The `make()` function provides a way to create these types with a specified size or capacity. It can be an efficient way for saving memory if the size/capacity of the a slice or map is known before creating them.
 
