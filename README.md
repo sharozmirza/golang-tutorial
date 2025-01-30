@@ -7,6 +7,7 @@
   * [Null Values](#null-values)
 * [Variable Declarations](#variable-declarations)
 * [Functions](#functions)
+  * [Using Functions As Values](#using-functions-as-values)
 * [Conditional Statements](#conditional-statements)
 * [Loops](#loops)
 * [Error Handling](#error-handling)
@@ -226,6 +227,76 @@ func myFunction(param1 int, param2 string) (retVal1 float64, retVal2 int) {
 }
 
 val1, _ := myFunction(arg1, arg2)
+```
+
+### Using Functions As Values
+
+In Go, functions can be assigned to variables, passed as arguments, and returned from other functions. This is possible because functions in Go are first-class citizens, meaning they can be treated as values just like any other type (e.g., integers, strings).
+
+An example where a function is assigned to a variable and invoked:
+
+```go
+// Define a function
+func add(a, b int) int {
+    return a + b
+}
+
+func main() {
+    var funcVar func(int, int) int  // Assign the function to a variable
+    funcVar = add // Assign the add function to funcVar
+
+    // Call the function through the variable
+    result := funcVar(3, 4)
+    fmt.Println("Result:", result) // Output: Result: 7
+}
+```
+
+Example of passing a function as an argument:
+
+```go
+// Define a function that takes another function as an argument
+func operate(a, b int, op func(int, int) int) int {
+    return op(a, b)
+}
+
+// Define a function to add
+func add(a, b int) int {
+    return a + b
+}
+
+// Define a function to multiply
+func multiply(a, b int) int {
+    return a * b
+}
+
+func main() {
+    // Call operate with different functions
+    fmt.Println("Addition:", operate(3, 4, add))       // Output: Addition: 7
+    fmt.Println("Multiplication:", operate(3, 4, multiply)) // Output: Multiplication: 12
+}
+```
+
+Example of returning a function from another function:
+
+```go
+// Define a function that returns another function
+func multiplier(factor int) func(int) int {
+    return func(x int) int {
+        return x * factor
+    }
+}
+
+func main() {
+    // Get a function that multiplies by 2
+    double := multiplier(2)
+    // Call the returned function
+    fmt.Println(double(5)) // Output: 10
+
+    // Get a function that multiplies by 3
+    triple := multiplier(3)
+    // Call the returned function
+    fmt.Println(triple(5)) // Output: 15
+}
 ```
 
 ## Conditional Statements
