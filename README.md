@@ -276,11 +276,16 @@ func main() {
 }
 ```
 
-Example of returning a function from another function:
+Example of returning a function from another function using an **anonymous function**:
+
+* An **anonymous function** is a function that is defined without a name. In Go, anonymous functions can be created just like named functions, but they are often used where the function is needed only temporarily and doesn’t need a name. They are often used in callbacks, or as arguments to other functions.
+* A **closure** is a function that captures variables from its outer function and retains access to those variables even after the function that created them has finished executing. In Go, closures are created when an anonymous function is defined within another function, and it captures the variables from the outer function's scope.
+  * The function `multiplier(factor int)` in the example below returns a closure that multiplies its argument `x` by the `factor` captured from the outer fucntion's scope. Two closures, `double` and `triple`, are created, capturing `2` and `3` as the `factor`, respectively. The variable `factor` is defined in the outer function's scope, and the closures retain access to it even after `multiplier()` has finished executing. That's why calling `double(5)` multiplies 5 by 2, and `triple(5)` multiplies 5 by 3.
 
 ```go
 // Define a function that returns another function
 func multiplier(factor int) func(int) int {
+    // Returns an anonymous function (closure)
     return func(x int) int {
         return x * factor
     }
