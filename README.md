@@ -31,6 +31,7 @@
   * [Dynamic Arrays (Lists) With Slices](#dynamic-arrays-lists-with-slices)
   * [Removing Elements Using Slices](#removing-elements-using-slices)
 * [Maps](#maps)
+  * [`make()`](#make)
 
 ### How to run a go file?
 
@@ -1013,4 +1014,37 @@ for key, value := range m {
 
 // Delete a key
 delete(m, "banana")
+```
+
+#### make()
+
+The make() function is a built-in function used to initialize slices or maps. It allocates memory and initializes the data structure to be used, which is crucial because these types do not automatically allocate memory when declared. The `make()` function provides a way to create these types with a specified size or capacity. It can be an efficient way for saving memory if the size/capacity of the a slice or map is known before creating them.
+
+Syntax for slices:
+
+```go
+make([]Type, length, capacity)
+```
+
+* `length`: The number of elements the slice should initially hold.
+* `capacity`: (Optional parameter) The total size that the slice can grow to before a new allocation is needed. If not specified, it defaults to the same value as length.
+
+Syntax for maps:
+
+```go
+make(map[KeyType]ValueType, initialCapacity)
+```
+
+* `initialCapacity`: (Optional parameter) The initial number of key-value pairs the map can hold before it grows. If omitted, Go uses a default capacity.
+
+```go
+// Create a slice of integers with length 5 and capacity 10
+slice := make([]int, 5, 10)
+
+fmt.Println("Slice:", slice)        // Output: Slice: [0 0 0 0 0]
+fmt.Println("Length:", len(slice))  // Output: Length: 5
+fmt.Println("Capacity:", cap(slice)) // Output: Capacity: 10
+
+// Create a map with string keys and int values, with an initial capacity of 5
+m := make(map[string]int, 5)
 ```
