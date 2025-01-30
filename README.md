@@ -30,6 +30,7 @@
   * [Length and Capacity of a Slice](#length-and-capacity-of-a-slice)
   * [Dynamic Arrays (Lists) With Slices](#dynamic-arrays-lists-with-slices)
   * [Removing Elements Using Slices](#removing-elements-using-slices)
+* [Maps](#maps)
 
 ### How to run a go file?
 
@@ -959,3 +960,57 @@ fmt.Println("Slice after removal:", slice) // Output: [10 20 40 50]
 ```
 
 * The above example shows how to remove an element from a slice by index. Removing an element by value or removing multiple elements can be achieved using loops.
+
+## Maps
+
+A `map` is a built-in data type that allows the storage of key-value pairs, where each key is unique. The key type  must be a comparable type, meaning the key must support comparison using the `==` operator.
+
+* Types that cannot be used as keys: slices, maps, functions, channels
+* Types that can be used as keys:
+  * Basic types: `int`, `float64`, `string`, `bool`, etc.
+  * Pointers
+  * Arrays
+  * Structs: Structs can be used as keys, provided all the fields in the struct are themselves comparable. If the struct contains a field of a non-comparable type (e.g., a function, or a map), the struct cannot be used as a key.
+
+```go
+// Declation Syntax
+var m map[KeyType]ValueType
+
+// Initialize a map using map literal
+m = map[string]int{"apple": 1, "banana": 2}
+
+// Initialize a map using make
+m = make(map[string]int)
+```
+
+Basic map usage:
+
+```go
+var mm map[string]int // This is a nil map
+fmt.Println(mm == nil) // Output: true
+
+// Initialize map mm
+mm = make(map[string]int)
+
+// Declare and initialize a map m
+m := map[string]int{"apple": 5, "banana": 3, "cherry": 8}
+
+// Access values
+fmt.Println("Apple:", m["apple"])   // Output: Apple: 5
+
+// Check if a key exists
+value, exists := m["grape"]
+if exists {
+    fmt.Println("Grape:", value)
+} else {
+    fmt.Println("Grape not found") // Output: Grape not found
+}
+
+// Iterate over a map
+for key, value := range m {
+    fmt.Println(key, ":", value)
+}
+
+// Delete a key
+delete(m, "banana")
+```
