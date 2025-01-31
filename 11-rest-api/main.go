@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"example.com/rest-api/db"
 	"example.com/rest-api/models"
@@ -13,12 +14,13 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", getEvents)    // GET request handler
+	server.GET("/events/:id", getEvent) // /events/1, /events/5
 	server.POST("/events", createEvent) // POST request handler
 
 	server.Run(":8080") // localhost:8080
 }
 
-// handler for GET /events endpoint
+// handler for GET /events route
 func getEvents(context *gin.Context) {
 	events, err := models.GetAllEvents()
 	if err != nil {
@@ -28,7 +30,28 @@ func getEvents(context *gin.Context) {
 	context.JSON(http.StatusOK, events)
 }
 
-// handler for POST /events endpoint
+// handler for GET /events:id route
+func getEvent(context *gin.Context) {
+	// context.Param("id") -> returns "id" as string
+	// ParseInt() interprets a string s in the given base (0, 2 to 36) and bit size (0 to 64) and returns the corresponding value.
+	// Since we are interested in a base 10 int64, we passed 10 and 64
+	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse event id."})
+		return
+	}
+
+	event, err := models.GetEventByID(eventId)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
+		return
+	}
+
+	context.JSON(http.StatusOK, event)
+}
+
+// handler for POST /events route
 func createEvent(context *gin.Context) {
 	var event models.Event
 
