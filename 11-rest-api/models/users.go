@@ -41,7 +41,15 @@ func (u User) Save() error {
 	return err
 }
 
-func (u User) ValidateCredentials() error {
+/*
+This function is used in routes/user.go->login() function.
+In the login() function, a user variable is created and passed for validation.
+If we use (u User) as the receiver type, we are going to receive a copy of the user variable,
+which will have userId value 0 since that is the default value for an int64 type.
+
+To receive the actual user ID, we need to use a pointer to user recieved in the request.
+*/
+func (u *User) ValidateCredentials() error {
 	query := "SELECT id, password FROM users WHERE email = ?"
 	row := db.DB.QueryRow(query, u.Email)
 
