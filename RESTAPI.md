@@ -65,3 +65,34 @@ Preparing statements vs Directly executing queries:
 But what's the advantage of using `Prepare()`?
 
 `Prepare()` prepares an SQL statement – this can lead to better performance if the same statement is executed multiple times (potentially with different data for its placeholders). This is only true if the prepared statement is not closed (stmt.Close()) in between those executions. In that case, there wouldn't be any advantageous.
+
+## Middleware Folder
+
+In a Go project, the middleware folder typically contains the code for middleware functions that are used to handle HTTP requests before they reach the main business logic of the application. Middleware functions can be used for tasks like authentication, logging, error handling, request validation, rate limiting, and more. These functions are usually added to the HTTP request-response cycle to modify or inspect the request and response.
+
+### AbortWithStatusJSON()
+
+In the Gin web framework, the `AbortWithStatusJSON()` method is used to stop the normal flow of request handling, preventing subsequent handlers or middleware from being executed. It immediately sends a JSON response with a specific HTTP status code. This is useful for scenarios where the request needs to be aborted from processing, typically after an error has occurred, and return a custom response (e.g., 400 for bad request, 401 for unauthorized).
+
+### Usage of Middleware
+
+*The `Authenticate` middleware from the `11-rest-api` project will be used as an example here.*
+
+One way of registering the `Authenticate` middleware to a request handler is to use it like below:
+
+```go
+server.POST("/events", middleware.Authenticate, createEvent)
+```
+
+In this case, the functions will be executed in left to right order. So, if a user is not authenticated, the handle will abort the request and the `createEvent` function will not be reached. But this needs to added to all the individual request handler that will be using this middleware.
+
+An alternative approach for this usage will be using `server.Group()` function. `Group()` creates a new router group. All the routes that have common middlewares or the same path prefix should be using this fucntion. For example, all the routes that use a common middleware for authorization could be grouped.
+
+```go
+// "/" is the common prefix for all the routes that will using the Authenticate middleware
+authenticated := server.Group("/")  
+authenticated.Use(middleware.Authenticate)
+authenticated.POST("/events", createEvent)
+authenticated.PUT("/events/:id", updateEvent)
+authenticated.DELETE("/events/:id", deleteEvent)
+```
